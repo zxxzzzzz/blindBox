@@ -1,0 +1,45 @@
+<template>
+  <div class="mx-[10%]">
+    <div class="flex justify-center my-4">
+      <div>医院LOGO</div>
+    </div>
+    <div>
+      <div class="flex my-8">
+        <div>ID</div>
+      </div>
+      <div class="flex mb-8">
+        <div class="mr-4">姓名</div>
+        <div class="mr-4">出生日期</div>
+        <div class="mr-4">年龄</div>
+        <div class="mr-4">性别</div>
+      </div>
+      <div>
+        <div class="mb-8">检查日期</div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <div>眼别</div>
+      <div class="flex">
+        <div class="w-[50%] mr-4">
+          <div class="w-[100%] pb-[100%] border box-border"></div>
+        </div>
+        <div class="w-[50%]">
+          <div class="w-[100%] pb-[50%] border box-border"></div>
+          <div class="w-[100%] pb-[50%] border box-border"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex mb-4">
+      <div class="flex-[3] pb-[50%] border mr-4">金字塔</div>
+      <div class="flex-[2] pb-[50%] border">MTF</div>
+    </div>
+    <div class="flex">
+      <div class="flex-[3] pb-[50%] border mr-4">像素插值柱状图</div>
+      <div class="flex-[2] pb-[50%]"></div>
+      <div></div>
+    </div>
+  </div>
+</template>
+<script lang="ts" setup>
+defineProps<{}>();
+</script>
