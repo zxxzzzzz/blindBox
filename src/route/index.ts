@@ -54,7 +54,7 @@ router.beforeEach((to) => {
     const isHigh = randomList[3] % 2 === 0 ? true : false;
     console.log({ isBlind, isHigh });
     return {
-      name: isBlind ? (isHigh ? 'flyHighBlind' : 'flyLowBlind') : isHigh ? 'flyHigh' : 'flyLow',
+      name: isBlind ? (isHigh ? 'flyHighBlind' : 'flyLowBlind') : isHigh ? 'flyHighNormal' : 'flyLowNormal',
     };
   }
 });
