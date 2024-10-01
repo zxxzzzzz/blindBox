@@ -9,7 +9,7 @@ export default defineConfig({
     host: true,
   },
   build:{
-    outDir:'web'
+    outDir:'server'
   },
   plugins: [vue(), UnoCSS()],
   resolve: {
