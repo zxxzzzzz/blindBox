@@ -7,7 +7,7 @@ export const handleStatic = async (request: ParsedRequest, response: ParsedRespo
   if (request.method !== 'get') {
     return true;
   }
-  const filePath = path.resolve(__dirname, './dist', './' + rawPath);
+  const filePath = path.resolve(__dirname, './web', './' + rawPath);
   const body = readFileSync(filePath, { encoding: 'utf-8' });
   response.statusCode = 200;
   response.headers = {

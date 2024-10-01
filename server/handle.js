@@ -11,7 +11,7 @@ const handleStatic = async (request, response) => {
     if (request.method !== 'get') {
         return true;
     }
-    const filePath = path_1.default.resolve(__dirname, './dist', './' + rawPath);
+    const filePath = path_1.default.resolve(__dirname, './web', './' + rawPath);
     const body = (0, fs_1.readFileSync)(filePath, { encoding: 'utf-8' });
     response.statusCode = 200;
     response.headers = {};
