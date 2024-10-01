@@ -19,12 +19,17 @@ export const handleStatic = async (request: ParsedRequest, response: ParsedRespo
     { ext: '.ttf', type: 'font/ttf', isBase64Encoded: true },
   ];
   const filePath = path.resolve(__dirname, './' + rawPath);
-  const extItem = extList.find(ext => rawPath.endsWith(ext.ext)) || { ext: '.html', type: 'text/html;charset=UTF-8', isBase64Encoded: false }
+  const extItem = extList.find((ext) => rawPath.endsWith(ext.ext)) || {
+    ext: '.html',
+    type: 'text/html;charset=UTF-8',
+    isBase64Encoded: false,
+  };
   const buf = readFileSync(filePath);
   response.statusCode = 200;
   response.headers = {
-    'content-type':extItem.type
+    'content-type': extItem.type,
   };
+  response.isBase64Encoded = extItem.isBase64Encoded;
   response.body = extItem.isBase64Encoded ? buf.toString('base64') : buf.toString('utf-8');
   return false;
 };
