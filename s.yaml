@@ -1,0 +1,46 @@
+
+edition: 3.0.0
+name: blindBox
+access: "default"
+
+resources:
+  data:
+    component: fc3
+    props: # 组件的属性值
+      region: cn-hangzhou # 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值
+      functionName: server
+      runtime: nodejs20
+      code: ./server
+      cpu: 1
+      handler: index.data
+      memorySize: 1024
+      diskSize: 512
+      description: 'server'
+      timeout: 60
+      instanceConcurrency: 1
+      triggers:
+        - triggerName: httpTrigger
+          triggerType: http
+          triggerConfig:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+  fc-domain: #  服务名称
+    component: fc3-domain
+    props: #  组件的属性值
+      region: cn-hangzhou
+      domainName: auto
+      protocol: HTTP # HTTP | HTTPS 
+      routeConfig:
+        routes:
+          - functionName: server
+            methods:
+              - POST
+              - GET
+              - PUT
+              - DELETE
+            path: /*
+            qualifier: LATEST
