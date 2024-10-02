@@ -57,6 +57,7 @@ export const handlePost = async (request: ParsedRequest, response: ParsedRespons
       'content-type': 'application/json',
     };
     try {
+      // @ts-expect-error
       const fileObj = await client.getObjectMeta('data.txt');
       // await client.append(
       //   'data.txt',
