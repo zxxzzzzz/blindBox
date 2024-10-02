@@ -67,7 +67,7 @@ const handlePost = async (request, response) => {
                     client.put(`${uid}.txt`, Buffer.from(body));
                 }
                 catch (error) {
-                    client.put(`${uid}.txt`, Buffer.from(data));
+                    client.put(`${uid}.txt`, Buffer.from(JSON.stringify(data)));
                 }
             }
             response.body = JSON.stringify({ code: 200 });
