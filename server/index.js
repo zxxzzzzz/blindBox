@@ -53,6 +53,6 @@ const pipe = async (event, context, callback, funcList) => {
     });
 };
 const data = (_event, content, callback) => {
-    pipe(_event, content, callback, [handle_1.handleStatic]);
+    pipe(_event, content, callback, [handle_1.handleStatic, handle_1.handlePost]);
 };
 exports.data = data;

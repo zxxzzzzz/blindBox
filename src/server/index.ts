@@ -1,5 +1,5 @@
 import { ParsedRequest, ParsedResponse, Request, Response } from './type';
-import { handleStatic } from './handle';
+import { handleStatic, handlePost } from './handle';
 
 const pipe = async (
   event: string,
@@ -58,5 +58,5 @@ const pipe = async (
 };
 
 export const data = (_event: string, content: string, callback: (_: null, res: Response) => void) => {
-  pipe(_event, content, callback, [handleStatic]);
+  pipe(_event, content, callback, [handleStatic, handlePost]);
 };
