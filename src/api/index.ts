@@ -1,3 +1,6 @@
+let isSending = false;
+const dataList: any[] = [];
+
 export function update(type: string, data: any) {
   const randomListStr = window.localStorage.getItem('randomList');
   let randomList: number[] = randomListStr ? JSON.parse(randomListStr) : [];
@@ -11,11 +14,19 @@ export function update(type: string, data: any) {
   const timestamp = new Date().valueOf();
   const dateTime = new Date(timestamp).toLocaleString();
   const url = location.href;
-  return fetch('/update', {
-    method: 'post',
-    body: JSON.stringify({ data, uid: randomList.join(''), timestamp, dateTime, url, type }),
-    headers: {
-      contentType: 'application/json',
-    },
-  });
+  if (isSending) {
+    dataList.push({ data, uid: randomList.join(''), timestamp, dateTime, url, type });
+    return;
+  }
+  isSending = true;
+  setTimeout(() => {
+    isSending = false;
+    return fetch('/update', {
+      method: 'post',
+      body: JSON.stringify({ dataList }),
+      headers: {
+        contentType: 'application/json',
+      },
+    });
+  }, 3000);
 }

@@ -52,9 +52,9 @@ const handlePost = async (request, response) => {
         return true;
     }
     if (rawPath === '/update') {
-        const { uid, data, timestamp, dateTime, url, type } = JSON.parse(request.body);
+        const { dataList } = JSON.parse(request.body);
         try {
-            client.append('data.txt', Buffer.from(JSON.stringify({ uid, data, timestamp, dateTime, url, type }) + '\r\n'));
+            client.append('data.txt', Buffer.from(dataList.map((d) => JSON.stringify({ d })).join('\r\n') + '\r\n'));
         }
         catch (error) { }
     }
