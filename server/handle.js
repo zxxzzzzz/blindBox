@@ -53,17 +53,20 @@ const handlePost = async (request, response) => {
     }
     if (rawPath === '/update') {
         const { dataList } = JSON.parse(request.body);
+        response.statusCode = 200;
+        response.isBase64Encoded = false;
+        response.headers = {
+            'content-type': 'application/json',
+        };
         try {
-            client.append('data.txt', Buffer.from(dataList.map((d) => JSON.stringify({ d })).join('\r\n') + '\r\n'));
+            const fileObj = await client.append('data.txt', Buffer.from(''));
+            await client.append('data.txt', Buffer.from(dataList.map((d) => JSON.stringify({ d })).join('\r\n') + '\r\n'), { position: fileObj.nextAppendPosition });
+            response.body = JSON.stringify({ code: 200 });
         }
-        catch (error) { }
+        catch (error) {
+            response.body = JSON.stringify({ code: 500, message: error.message });
+        }
     }
-    response.statusCode = 200;
-    response.headers = {
-        'content-type': 'application/json',
-    };
-    response.isBase64Encoded = false;
-    response.body = JSON.stringify({ code: 200 });
     return false;
 };
 exports.handlePost = handlePost;
