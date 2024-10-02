@@ -21,13 +21,14 @@ export function update(type: string, data: any) {
   isSending = true;
   setTimeout(async () => {
     isSending = false;
+    const _dataList = [...dataList];
+    dataList = [];
     await fetch('/update', {
       method: 'post',
-      body: JSON.stringify({ dataList }),
+      body: JSON.stringify({ dataList: _dataList }),
       headers: {
         contentType: 'application/json',
       },
     });
-    dataList = []
   }, 3000);
 }
