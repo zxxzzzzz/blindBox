@@ -9,6 +9,7 @@ import FlyHighBlind from '@/page/fly/highBlind.vue';
 import FlyLow from '@/page/fly/low.vue';
 import FlyHigh from '@/page/fly/high.vue';
 import Question from '@/page/question/index.vue';
+import { getRandomList } from '@/util';
 
 const routes = [
   { path: '/shopNormal', component: TaoBao, name: 'shopNormal' },
@@ -29,15 +30,7 @@ export const router = createRouter({
 router.beforeEach((to) => {
   const nameList = routes.map((r) => r.name);
   if (nameList.includes(to.name as string)) return true;
-  const randomListStr = window.localStorage.getItem('randomList');
-  let randomList: number[] = randomListStr ? JSON.parse(randomListStr) : [];
-  if (!randomList?.length || randomList?.length < 100) {
-    randomList = [
-      ...(randomList || []),
-      ...new Array(100 - (randomList?.length || 0)).fill(0).map(() => Math.round(Math.random() * 1000)),
-    ];
-    window.localStorage.setItem('randomList', JSON.stringify(randomList));
-  }
+  const randomList = getRandomList();
   if (to.path === '/shop') {
     const isBlind = randomList[0] % 2 === 0 ? true : false;
     console.log(isBlind);
