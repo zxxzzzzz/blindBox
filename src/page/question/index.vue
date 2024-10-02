@@ -1,27 +1,69 @@
 <template>
   <div class="bg-[#f0f0f0] overflow-hidden">
-    <PerceivedUncertainty></PerceivedUncertainty>
-    <ImpulsePurchase class="mt-0.5rem"</ImpulsePurchase>
-    <PerceivedSerendipity class="mt-0.5rem"></PerceivedSerendipity>
-    <SelfControl class="mt-0.5rem"></SelfControl>
-    <SelfGiftPropensity class="mt-0.5rem"></SelfGiftPropensity>
-    <TouristInspiration class="mt-0.5rem"></TouristInspiration>
-    <div class="my-1.5rem bg-blue h-2rem w-[50%] rounded-lg mx-auto leading-loose text-white text-center text-1rem">
+    <QuestionCard
+      v-for="item in questionList"
+      :question="item.question"
+      v-model="item.value"
+      :key="item.question"
+    ></QuestionCard>
+    <div
+      class="my-1.5rem bg-blue h-2rem w-[50%] rounded-lg mx-auto leading-loose text-white text-center text-1rem"
+      @click="handleSubmit"
+    >
       提交
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import PerceivedUncertainty from './perceivedUncertainty.vue';
-import ImpulsePurchase from './impulsePurchase.vue';
-import PerceivedSerendipity from './perceivedSerendipity.vue';
-import SelfControl from './selfControl.vue';
-import SelfGiftPropensity from './selfGiftPropensity.vue';
-import TouristInspiration from './touristInspiration.vue';
+import { ref } from 'vue';
+import QuestionCard from './component/questionCard.vue';
+import { update } from '@/api';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+import { isQuestionDone } from '@/store';
+const router = useRouter();
 
+const questionList = ref([
+  { question: '1.很难判断商品的材质和质量是否真实', value: -1 },
+  { question: '2.很难确保我的期望和实际商品相符', value: -1 },
+  { question: '3.很难确定商品的款式是否适合自己', value: -1 },
+  { question: '1.我多次有突然想买东西的冲动', value: -1 },
+  { question: '2.在这次购物中，我购买了一些原本没有计划的东西', value: -1 },
+  { question: '3.这次购物中，我看到了许多我想买的东西，尽管它们不在我的购物清单上', value: -1 },
+  { question: '4.在这次购物中，我没有强烈的冲动去买计划外的东西', value: -1 },
+  { question: '1.我的想象力被激发了', value: -1 },
+  { question: '2.一个新的想法让我感到好奇', value: -1 },
+  { question: '3.我意外且自然而然地产生了新想法', value: -1 },
+  { question: '4.我的视野变得更加开阔', value: -1 },
+  { question: '5.我发现了新的事物', value: -1 },
+  { question: '1.我体验到了从未有过的经历', value: -1 },
+  { question: '2.我体验到了以前从未想过的事情', value: -1 },
+  { question: '3.我经历了与日常生活不同的事情', value: -1 },
+  { question: '4.我经历了一次巧合冲动去买计划外的东西', value: -1 },
+  { question: '5.我经历了一个命运般的时刻', value: -1 },
+  { question: '6.我遇到了一件幸运的事', value: -1 },
+  { question: '1.比起购买，我更喜欢储蓄', value: -1 },
+  { question: '2.我可以为了未来放弃当前的购买。', value: -1 },
+  { question: '3.我设立了应急基金以备紧急情况之需。', value: -1 },
+  { question: '4.我定期存钱', value: -1 },
+  { question: '5.当我要买东西时，我倾向于在购买之前制定计划。', value: -1 },
+  { question: '6.购买前会仔细考虑，避免出错。', value: -1 },
+  { question: '7.我对花钱有自己的规则。', value: -1 },
+  { question: '1.总体来说，我是那种会给自己买礼物的人', value: -1 },
+  { question: '2.我经常会想着给自己买礼物', value: -1 },
+  { question: '3.总体上，我会花很多时间考虑送给自己的礼物', value: -1 },
+]);
+const handleSubmit = () => {
+  const isDone = questionList.value.every((item) => item.value !== -1);
+  if (!isDone) {
+    ElMessage.error('问卷还没填完');
+    return;
+  }
+  isQuestionDone.value = true;
+  update('question', questionList.value);
+  router.back();
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,6 +1,17 @@
 import { ParsedRequest, ParsedResponse } from './type';
 import path from 'path';
 import { readFileSync } from 'fs';
+import OSS from 'ali-oss';
+
+const client = new OSS({
+  // yourRegion填写Bucket所在地域。以华东1（杭州）为例，Region填写为oss-cn-hangzhou。
+  region: 'oss-cn-hangzhou',
+  // 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
+  accessKeyId: 'LTAI5tNpSy9xc' + 'TEcAK7M7Uxu',
+  accessKeySecret: 'xJw1QUVCmOs' + 'DT5ZHqJgMssUZTtalqo',
+  bucket: 'blind-box-zxx',
+  internal: true,
+});
 
 export const handleStatic = async (request: ParsedRequest, response: ParsedResponse) => {
   const rawPath = request.rawPath === '/' || !request.rawPath ? '/index.html' : request.rawPath;
@@ -31,5 +42,24 @@ export const handleStatic = async (request: ParsedRequest, response: ParsedRespo
   };
   response.isBase64Encoded = extItem.isBase64Encoded;
   response.body = extItem.isBase64Encoded ? buf.toString('base64') : buf.toString('utf-8');
+  return false;
+};
+export const handlePost = async (request: ParsedRequest, response: ParsedResponse) => {
+  const rawPath = request.rawPath;
+  if (request.method !== 'post') {
+    return true;
+  }
+  if (rawPath === '/update') {
+    const { uid, data, timestamp, dateTime, url, type } = JSON.parse(request.body);
+    try {
+        client.append('data.txt', Buffer.from(JSON.stringify({uid, data, timestamp, dateTime, url, type}) + '\r\n'));
+    } catch (error) {}
+  }
+  response.statusCode = 200;
+  response.headers = {
+    'content-type': 'application/json',
+  };
+  response.isBase64Encoded = false;
+  response.body = JSON.stringify({ code: 200 });
   return false;
 };

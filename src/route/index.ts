@@ -31,25 +31,27 @@ router.beforeEach((to) => {
   if (nameList.includes(to.name as string)) return true;
   const randomListStr = window.localStorage.getItem('randomList');
   let randomList: number[] = randomListStr ? JSON.parse(randomListStr) : [];
-  if (!randomList?.length) {
-    randomList = new Array(10).fill(0).map(() => Math.round(Math.random() * 100));
+  if (!randomList?.length || randomList?.length < 100) {
+    randomList = [
+      ...(randomList || []),
+      ...new Array(100 - (randomList?.length || 0)).fill(0).map(() => Math.round(Math.random() * 1000)),
+    ];
     window.localStorage.setItem('randomList', JSON.stringify(randomList));
   }
-  console.log(to);
-  if ((to.path === '/shop')) {
+  if (to.path === '/shop') {
     const isBlind = randomList[0] % 2 === 0 ? true : false;
     console.log(isBlind);
     return {
       name: isBlind ? 'shopBlind' : 'shopNormal',
     };
   }
-  if ((to.path === '/jun')) {
+  if (to.path === '/jun') {
     const isBlind = randomList[1] % 2 === 0 ? true : false;
     return {
       name: isBlind ? 'junBlind' : 'junNormal',
     };
   }
-  if ((to.path === '/fly')) {
+  if (to.path === '/fly') {
     const isBlind = randomList[2] % 2 === 0 ? true : false;
     const isHigh = randomList[3] % 2 === 0 ? true : false;
     console.log({ isBlind, isHigh });

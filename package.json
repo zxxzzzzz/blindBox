@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/ali-oss": "^6.16.11",
+    "ali-oss": "^6.21.0",
     "element-plus": "^2.8.4",
     "vue": "^3.4.37",
     "vue-router": "^4.4.5"

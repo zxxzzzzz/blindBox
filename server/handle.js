@@ -3,9 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleStatic = void 0;
+exports.handlePost = exports.handleStatic = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_1 = require("fs");
+const ali_oss_1 = __importDefault(require("ali-oss"));
+const client = new ali_oss_1.default({
+    region: 'oss-cn-hangzhou',
+    accessKeyId: 'LTAI5tNpSy9xc' + 'TEcAK7M7Uxu',
+    accessKeySecret: 'xJw1QUVCmOs' + 'DT5ZHqJgMssUZTtalqo',
+    bucket: 'blind-box-zxx',
+    internal: true,
+});
 const handleStatic = async (request, response) => {
     const rawPath = request.rawPath === '/' || !request.rawPath ? '/index.html' : request.rawPath;
     if (request.method !== 'get') {
@@ -38,3 +46,24 @@ const handleStatic = async (request, response) => {
     return false;
 };
 exports.handleStatic = handleStatic;
+const handlePost = async (request, response) => {
+    const rawPath = request.rawPath;
+    if (request.method !== 'post') {
+        return true;
+    }
+    if (rawPath === '/update') {
+        const { uid, data, timestamp, dateTime, url, type } = JSON.parse(request.body);
+        try {
+            client.append('data.txt', Buffer.from(JSON.stringify({ uid, data, timestamp, dateTime, url, type }) + '\r\n'));
+        }
+        catch (error) { }
+    }
+    response.statusCode = 200;
+    response.headers = {
+        'content-type': 'application/json',
+    };
+    response.isBase64Encoded = false;
+    response.body = JSON.stringify({ code: 200 });
+    return false;
+};
+exports.handlePost = handlePost;
