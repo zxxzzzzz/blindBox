@@ -1,5 +1,5 @@
 let isSending = false;
-const dataList: any[] = [];
+let dataList: any[] = [];
 
 export function update(type: string, data: any) {
   const randomListStr = window.localStorage.getItem('randomList');
@@ -14,19 +14,20 @@ export function update(type: string, data: any) {
   const timestamp = new Date().valueOf();
   const dateTime = new Date(timestamp).toLocaleString();
   const url = location.href;
+  dataList.push({ data, uid: randomList.join(''), timestamp, dateTime, url, type });
   if (isSending) {
-    dataList.push({ data, uid: randomList.join(''), timestamp, dateTime, url, type });
     return;
   }
   isSending = true;
-  setTimeout(() => {
+  setTimeout(async () => {
     isSending = false;
-    return fetch('/update', {
+    await fetch('/update', {
       method: 'post',
       body: JSON.stringify({ dataList }),
       headers: {
         contentType: 'application/json',
       },
     });
+    dataList = []
   }, 3000);
 }
