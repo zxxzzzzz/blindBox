@@ -50,22 +50,20 @@ export const handlePost = async (request: ParsedRequest, response: ParsedRespons
     return true;
   }
   if (rawPath === '/update') {
-    const { dataList } = JSON.parse(request.body);
+    const { dataList } = JSON.parse(request.body) as { dataList: any[] };
     response.statusCode = 200;
     response.isBase64Encoded = false;
     response.headers = {
       'content-type': 'application/json',
     };
     try {
-      for (const data of dataList) {
-        const uid = data.uid;
-        try {
-          const fileObj = await client.get(`${uid}.txt`);
-          const body = fileObj.content + '\r\n' + JSON.stringify(data);
-          client.put(`${uid}.txt`, Buffer.from(body));
-        } catch (error) {
-          client.put(`${uid}.txt`, Buffer.from(JSON.stringify(data)));
-        }
+      const uid = dataList[0].uid;
+      const bodyStr = dataList.map((item: any) => JSON.stringify(item)).join('\r\n')
+      try {
+        const fileObj = await client.get(`${uid}.txt`);
+        client.put(`${uid}.txt`, Buffer.from(fileObj.content + '\r\n' + bodyStr));
+      } catch (error) {
+        client.put(`${uid}.txt`, Buffer.from(bodyStr));
       }
       response.body = JSON.stringify({ code: 200 });
     } catch (error) {
