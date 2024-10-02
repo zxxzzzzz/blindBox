@@ -57,14 +57,17 @@ export const handlePost = async (request: ParsedRequest, response: ParsedRespons
       'content-type': 'application/json',
     };
     try {
-      // @ts-expect-error
-      const fileObj = await client.getObjectMeta('data.txt');
-      // await client.append(
-      //   'data.txt',
-      //   Buffer.from((dataList as any[]).map((d) => JSON.stringify({ d })).join('\r\n') + '\r\n'),
-      //   { position: fileObj.nextAppendPosition }
-      // );
-      response.body = JSON.stringify({ code: 200, result: fileObj });
+      for (const data of dataList) {
+        const uid = data.uid;
+        try {
+          const fileObj = await client.get(`${uid}.txt`);
+          const body = fileObj.content + '\r\n' + JSON.stringify(data);
+          client.put(`${uid}.txt`, Buffer.from(body));
+        } catch (error) {
+          client.put(`${uid}.txt`, Buffer.from(data));
+        }
+      }
+      response.body = JSON.stringify({ code: 200 });
     } catch (error) {
       response.body = JSON.stringify({ code: 500, message: (error as Error).message });
     }

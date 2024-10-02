@@ -59,8 +59,18 @@ const handlePost = async (request, response) => {
             'content-type': 'application/json',
         };
         try {
-            const fileObj = await client.getObjectMeta('data.txt');
-            response.body = JSON.stringify({ code: 200, result: fileObj });
+            for (const data of dataList) {
+                const uid = data.uid;
+                try {
+                    const fileObj = await client.get(`${uid}.txt`);
+                    const body = fileObj.content + '\r\n' + JSON.stringify(data);
+                    client.put(`${uid}.txt`, Buffer.from(body));
+                }
+                catch (error) {
+                    client.put(`${uid}.txt`, Buffer.from(data));
+                }
+            }
+            response.body = JSON.stringify({ code: 200 });
         }
         catch (error) {
             response.body = JSON.stringify({ code: 500, message: error.message });
