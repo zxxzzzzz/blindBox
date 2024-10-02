@@ -57,13 +57,13 @@ export const handlePost = async (request: ParsedRequest, response: ParsedRespons
       'content-type': 'application/json',
     };
     try {
-      const fileObj = await client.append('data.txt', Buffer.from(''));
-      await client.append(
-        'data.txt',
-        Buffer.from((dataList as any[]).map((d) => JSON.stringify({ d })).join('\r\n') + '\r\n'),
-        { position: fileObj.nextAppendPosition }
-      );
-      response.body = JSON.stringify({ code: 200 });
+      const fileObj = await client.getObjectMeta('data.txt');
+      // await client.append(
+      //   'data.txt',
+      //   Buffer.from((dataList as any[]).map((d) => JSON.stringify({ d })).join('\r\n') + '\r\n'),
+      //   { position: fileObj.nextAppendPosition }
+      // );
+      response.body = JSON.stringify({ code: 200, result: fileObj });
     } catch (error) {
       response.body = JSON.stringify({ code: 500, message: (error as Error).message });
     }
