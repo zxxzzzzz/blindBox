@@ -1,5 +1,8 @@
 <template>
-  <div class="rounded-lg bg-white p-0.5rem card">
+  <div
+    class="rounded-lg bg-white p-0.5rem card"
+    :class="props.isError ? 'border-2 border-red border-solid' : ''"
+  >
     <div>{{ props.question }}</div>
     <div class="px-0.5rem">
       <div class="flex justify-between mt-1rem">
@@ -27,6 +30,7 @@
 const props = defineProps<{
   question: string;
   modelValue: number;
+  isError: boolean;
 }>();
 const emits = defineEmits<{
   (e: 'update:modelValue', data: number): void;
