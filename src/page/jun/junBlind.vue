@@ -1,38 +1,110 @@
 <template>
-  <div>
-    <div class="bg-[#2f5597] h-4rem flex items-center justify-between px-0.5rem">
-      <div class="text-white text-1.5rem">旅行社</div>
-      <div class="flex">
-        <div class="h-1.5rem p-0.5rem bg-[#d2c3e0] rounded-lg mr-0.5rem">旅行调查</div>
-        <div class="h-1.5rem p-0.5rem bg-[#d2c3e0] rounded-lg">马上预定</div>
+  <div class="relative bg-[#f0f0f0] h-[100vh]">
+    <div class="h-3rem bg-[#f2f2f2] fixed w-full flex items-center justify-between px-0.5rem box-border top-0">
+      <div class="i-ant-design:left-outlined w-1.5rem h-1.5rem" data-tag="返回"></div>
+      <div class="">
+        <input type="text" class="outline-none border-none h-2rem rounded-xl" />
       </div>
+      <div class="i-ant-design:export-outlined w-1.5rem h-1.5rem" data-tag="分享"></div>
+      <div class="i-ant-design:shopping-cart-outlined w-1.5rem h-1.5rem" data-tag="购物车"></div>
+      <div class="i-ant-design:ellipsis-outlined w-1.5rem h-1.5rem" data-tag="更多"></div>
     </div>
-    <div :style="{ backgroundImage: `url(${bgUrl})` }" class="bg-no-repeat p-0.75rem bg-cover">
-      <div class="bg-white opacity-90 p-0.5rem">
-        <div class="indent-sm">
-          告诉我们你的喜好，我们将为您安排神秘的旅途计划，您将在旅途中逐渐揭晓这份神秘计划，一起去迎接未知的美好吧。
+    <div class="h-3rem"></div>
+    <div class="bg-red w-full pt-[100%]" :style="goodsStyle" data-tag="商品图片"></div>
+    <div class="rounded-xl bg-white m-0.5rem p-0.5rem pb-1.5rem">
+      <div class="text-#ed6828">¥</div>
+      <div class="mt-0.5rem text-12px text-#a0a0a0">
+        <span>快递:包邮</span>
+        <span class="ml-2rem">发货地:珠海仓</span>
+      </div>
+      <div class="mt-0.5rem text-12px text-#a0a0a0">不支持七天无理由退换</div>
+      <div class="mt-1rem text-18px">【盲盒】旅行盲盒，感受意料之外的惊喜</div>
+    </div>
+    <div class="flex w-full h-2rem text-14px justify-end" v-if="step === '1'">
+      <ElButton class="w-full" type="primary" @click="handleClickNext"> 了解更多产品介绍 </ElButton>
+    </div>
+    <div class="flex h-3rem bg-white items-center justify-between px-0.5rem" v-if="step === '2'">
+      <div class="text-#a0a0a0">
+        <div class="i-ant-design:shop-outlined w-1.5rem h-1.5rem" data-tag="店铺"></div>
+        <div class="text-12px text-center" data-tag="店铺">店铺</div>
+      </div>
+      <div class="text-#a0a0a0">
+        <div class="i-ant-design:aliwangwang-outlined w-1.5rem h-1.5rem" data-tag="客服"></div>
+        <div class="text-12px text-center" data-tag="客服">客服</div>
+      </div>
+      <div class="text-#a0a0a0">
+        <div class="i-ant-design:star-outlined w-1.5rem h-1.5rem" data-tag="收藏"></div>
+        <div class="text-12px text-center" data-tag="收藏">收藏</div>
+      </div>
+      <div class="flex w-60% h-2rem text-14px">
+        <div
+          class="rounded-l-0.75rem bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          data-tag="我再想想"
+          @click="handleThinkClick"
+        >
+          我再想想
         </div>
-        <div class="indent-sm mt-0.5rem">
-          首先，您需要完成我们的神秘旅行调查并提供您的旅行偏好。然后我们开始为您打造一个单独设计和定制的度假胜地。在您旅行前一周，我们会通过电子邮件向您发送天气预报、装箱单和航班起飞时间。
+        <div
+          class="bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          data-tag="加入购物车"
+          @click="handleShopCarClick"
+        >
+          加入购物车
         </div>
-        <div class="indent-sm mt-0.5rem">
-          不久之后，我们会向您邮寄展示包，其中包含目的地概述、我们为您选择该目的地的原因、您的所有旅行预订信息以及餐饮和活动选择指南。您将把这个密封的红包带到机场打开并发现您要去哪里！
+        <div
+          class="rounded-r-0.75rem text-white bg-gradient-to-r from-[#fe7705] to-[#fd4d01] flex-1 leading-loose text-center"
+          data-tag="立即购买"
+          @click="handleBuyClick"
+        >
+          立即购买
         </div>
-        <div class="indent-sm mt-0.5rem">抵制提前撕开红包的诱惑...这都是神秘之旅体验的一部分！</div>
-        <div class="indent-sm mt-0.5rem">
-          这种度假风格意味着您不必（甚至不能）花费数小时仔细研究目的地选择、航班时刻表、酒店评论、事情清单、餐厅评论等。我们利用我们丰富的旅行知识和经验处理所有细节。
-        </div>
-        <div class="indent-sm mt-0.5rem">
-          您只需陶醉在期待和兴奋中，然后出现并享受这种独特的旅行体验，我们根据您提供的参数为您计划了旅行，让您高枕无忧。它既无压力又有趣！
-        </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import bgUrl from '@/assets/bg1.png';
+import goodsUrl from '@/assets/junBlind.png';
+import { computed, StyleValue } from 'vue';
+import { ElButton, ElMessage } from 'element-plus';
+import { useRoute, useRouter } from 'vue-router';
+import { delay } from '@/util';
+import { update } from '@/api';
+
+const router = useRouter();
+const route = useRoute();
+
+const step = computed(() => {
+  return (route.query?.step || 1).toString();
+});
+
+const goodsStyle = computed(() => {
+  return {
+    backgroundImage: `url(${goodsUrl})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  } as StyleValue;
+});
+
+const handleClickNext = () => {
+  router.push({ name: 'junBlindDesc', query: { name: route.name as string } });
+};
+const handleShopCarClick = async () => {
+  ElMessage.success('加入购物车成功');
+  await delay(1000);
+  update('addShopCar', {})
+  router.push({ name: 'question2' });
+};
+const handleBuyClick = async () => {
+  ElMessage.success('下单成功');
+  update('buy', {})
+  await delay(1000);
+  router.push({ name: 'question2' });
+};
+const handleThinkClick = () => {
+  update('think', {})
+  router.push({ name: 'question2' });
+};
 </script>
 
 <style scoped></style>

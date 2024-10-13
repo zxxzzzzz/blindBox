@@ -1,14 +1,18 @@
 <template>
-  <div class="bg-[#d0cece]">
-    <div class="h-12rem bg-amber overflow-hidden flex flex-col justify-between">
-      <div class="text-2rem text-white text-center font-800 mt-1rem">机票盲盒</div>
-      <div class="flex justify-center text-1.25rem bg-[rgba(200,200,200,0.6)] rounded-lg mx-2rem h-2rem leading-normal">
-        <div class="mr-0.5rem text-red">198元</div>
-        <div class="mr-0.75rem text-[#64adf5]">单程机票</div>
-        <div class="text-[#64adf5]">不喜欢?全额退</div>
-      </div>
-      <div class="text-1rem bg-[rgba(200,200,200,0.6)] text-center p-0.2rem">
-        <div>覆盖全国所有地级市！出发城市任您挑！</div>
+  <div class="bg-[#d0cece] h-screen">
+    <div class="w-100% pt-100% h-0 relative" :style="goodsStyle">
+      <div class="absolute top-0 w-full">
+        <div class="text-2rem text-black text-center font-800 mt-10% bg-[rgba(255,255,255,0.3)]">机票盲盒</div>
+        <div
+          class="flex justify-center mt-0.75rem text-1.25rem bg-[rgba(255,255,255,0.7)] rounded-lg mx-2rem h-2rem leading-normal"
+        >
+          <div class="mr-0.5rem text-[rgb(255,10,10)] font-bold">198元</div>
+          <div class="mr-0.5rem text-black">单程机票</div>
+          <div class="text-black">不喜欢?全额退</div>
+        </div>
+        <div class="text-1rem mt-5rem bg-[rgba(255,255,255,0.7)] text-center p-0.2rem">
+          <div class="text-black">覆盖全国所有地级市！出发城市任您挑！</div>
+        </div>
       </div>
     </div>
     <div class="overflow-hidden">
@@ -16,8 +20,16 @@
         <div class="flex justify-between text-1rem">
           <div>填写盲盒信息</div>
           <div class="flex">
-            <div class="mr-0.5rem">目的地?</div>
-            <div>出发日期?</div>
+            <ElPopover content="目的地会在所选出发地，对应的已开通航的全国任意目的地城市（暂不含港澳台地区）">
+              <template #reference>
+                <ElButton type="text" class="mr-0.5rem h-24px">目的地?</ElButton>
+              </template>
+            </ElPopover>
+            <ElPopover content="未来3到2周内的任意一天随机抽取">
+              <template #reference>
+                <ElButton type="text" class="mr-0.5rem h-24px">出发日期?</ElButton>
+              </template>
+            </ElPopover>
           </div>
         </div>
         <div class="mt-1.5rem">
@@ -33,8 +45,16 @@
           </div>
         </div>
         <div class="border-1 border-dashed w-full my-1rem opacity-50"></div>
-        <div>
-          <div class="rounded-2xl bg-[#fea9be] h-3rem text-1.5rem text-white leading-loose text-center">¥198元立即购买</div>
+        <div v-if="step === '2'" class="flex justify-center">
+          <div class="rounded-l-2xl bg-[#fea9be] h-2rem text-1rem text-white leading-loose text-center px-0.5rem" @click="handleShopCarClick">
+            加入购物车
+          </div>
+          <div class=" bg-[#fea9be] h-2rem text-1rem text-white leading-loose text-center mx-0.25rem px-0.5rem" @click="handleBuyClick">
+            ¥50元立即购买
+          </div>
+          <div class="rounded-r-2xl bg-[#fea9be] h-2rem text-1rem text-white leading-loose text-center px-0.5rem" @click="handleThinkClick">
+            我再想想
+          </div>
         </div>
       </div>
     </div>
@@ -46,15 +66,32 @@
         <div>3.所有价款包含税费和基建燃油费。</div>
       </div>
     </div>
+    <div class="flex w-full h-2rem text-14px justify-end" v-if="step === '1'">
+      <ElButton class="w-full" type="primary" @click="handleClickNext"> 下一步 </ElButton>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ElSelect, ElOption, ElInput } from 'element-plus';
-import { computed, ref } from 'vue';
+import { ElSelect, ElOption, ElInput, ElPopover, ElButton, ElMessage } from 'element-plus';
+import { computed, ref, StyleValue } from 'vue';
 import { cityList } from './cityList';
+import flyBgUrl from '@/assets/flyBlind.png';
+import { useRoute, useRouter } from 'vue-router';
+import { delay } from '@/util';
+import { update } from '@/api';
 
+const route = useRoute();
+const router = useRouter();
 const city = ref<string>('');
+
+const goodsStyle = computed(() => {
+  return {
+    backgroundImage: `url(${flyBgUrl})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  } as StyleValue;
+});
 const posOptions = computed(() => {
   return cityList.map((name) => {
     return {
@@ -63,6 +100,29 @@ const posOptions = computed(() => {
     };
   });
 });
+const step = computed(() => {
+  return (route.query?.step || 1).toString();
+});
+
+const handleClickNext = () => {
+  router.push({ name: 'question', query: { name: route.name as string } });
+};
+const handleShopCarClick = async () => {
+  ElMessage.success('加入购物车成功');
+  await delay(1000);
+  update('addShopCar', {})
+  router.push({ name: 'question2' });
+};
+const handleBuyClick = async () => {
+  ElMessage.success('下单成功');
+  update('buy', {})
+  await delay(1000);
+  router.push({ name: 'question2' });
+};
+const handleThinkClick = () => {
+  update('think', {})
+  router.push({ name: 'question2' });
+};
 </script>
 
 <style>

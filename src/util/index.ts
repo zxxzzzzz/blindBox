@@ -5,5 +5,13 @@ export function getRandomList() {
     randomList = new Array(10).fill(0).map(() => Math.round(Math.random() * 1000));
     window.localStorage.setItem('randomList', JSON.stringify(randomList));
   }
-  return randomList
+  return randomList;
+}
+
+export function delay(n: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(n);
+    }, n);
+  });
 }

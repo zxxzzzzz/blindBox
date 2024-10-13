@@ -10,7 +10,7 @@
       <div class="i-ant-design:ellipsis-outlined w-1.5rem h-1.5rem" data-tag="更多"></div>
     </div>
     <div class="h-3rem"></div>
-    <div class="h-16rem bg-red" :style="goodsStyle" data-tag="商品图片"></div>
+    <div class="w-full pt-[100%]" :style="goodsStyle" data-tag="商品图片"></div>
     <div class="rounded-xl bg-white  m-0.5rem p-0.5rem pb-1.5rem">
       <div class="text-#ed6828">¥</div>
       <div class="mt-0.5rem text-12px text-#a0a0a0">
@@ -18,24 +18,47 @@
         <span class="ml-2rem">发货地:珠海仓</span>
       </div>
       <div class="mt-0.5rem text-12px text-#a0a0a0">不支持七天无理由退换</div>
-      <div class="mt-1rem text-18px">小米空调巨省电pro盲盒</div>
+      <div class="mt-1rem text-18px">【盲盒】纪念版赛车模型盲盒多种款式随机发货
+      </div>
     </div>
-    <div class="flex h-3rem bg-white items-center justify-between px-0.5rem">
+    <div class="flex w-full h-2rem text-14px justify-end" v-if="step === '1'">
+      <ElButton class="w-full" type="primary" @click="handleClickNext"> 下一步 </ElButton>
+    </div>
+    <div class="flex h-3rem bg-white items-center justify-between px-0.5rem" v-if="step === '2'">
       <div class="text-#a0a0a0">
         <div class="i-ant-design:shop-outlined w-1.5rem h-1.5rem" data-tag="店铺"></div>
         <div class="text-12px text-center" data-tag="店铺">店铺</div>
       </div>
       <div class="text-#a0a0a0">
         <div class="i-ant-design:aliwangwang-outlined w-1.5rem h-1.5rem" data-tag="客服"></div>
-        <div class="text-12px  text-center" data-tag="客服">客服</div>
+        <div class="text-12px text-center" data-tag="客服">客服</div>
       </div>
       <div class="text-#a0a0a0">
         <div class="i-ant-design:star-outlined w-1.5rem h-1.5rem" data-tag="收藏"></div>
         <div class="text-12px text-center" data-tag="收藏">收藏</div>
       </div>
-      <div class="flex w-60% h-2rem text-14px"> 
-        <div class="rounded-l-0.75rem bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center" data-tag="加入购物车">加入购物车</div>
-        <div class="rounded-r-0.75rem text-white bg-gradient-to-r from-[#fe7705] to-[#fd4d01] flex-1 leading-loose text-center" data-tag="立即购买">立即购买</div>
+      <div class="flex w-60% h-2rem text-14px">
+        <div
+          class="rounded-l-0.75rem bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          data-tag="我再想想"
+          @click="handleThinkClick"
+        >
+          我再想想
+        </div>
+        <div
+          class="bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          data-tag="加入购物车"
+          @click="handleShopCarClick"
+        >
+          加入购物车
+        </div>
+        <div
+          class="rounded-r-0.75rem text-white bg-gradient-to-r from-[#fe7705] to-[#fd4d01] flex-1 leading-loose text-center"
+          data-tag="立即购买"
+          @click="handleBuyClick"
+        >
+          立即购买
+        </div>
       </div>
     </div>
   </div>
@@ -44,13 +67,45 @@
 <script setup lang="ts">
 import goodsUrl from '@/assets/R-C.png';
 import { computed, StyleValue } from 'vue';
+import { ElButton, ElMessage } from 'element-plus';
+import { useRoute, useRouter } from 'vue-router';
+import { delay } from '@/util';
+import { update } from '@/api';
+
+const router = useRouter();
+const route = useRoute();
+
+const step = computed(() => {
+  return (route.query?.step || 1).toString();
+});
 
 const goodsStyle = computed(() => {
   return {
     backgroundImage: `url(${goodsUrl})`,
     backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
   } as StyleValue;
 });
+
+const handleClickNext = () => {
+  router.push({ name: 'question', query: { name: route.name as string } });
+};
+const handleShopCarClick = async () => {
+  ElMessage.success('加入购物车成功');
+  await delay(1000);
+  update('addShopCar', {})
+  router.push({ name: 'question2' });
+};
+const handleBuyClick = async () => {
+  ElMessage.success('下单成功');
+  update('buy', {})
+  await delay(1000);
+  router.push({ name: 'question2' });
+};
+const handleThinkClick = () => {
+  update('think', {})
+  router.push({ name: 'question2' });
+};
 </script>
 
 <style scoped></style>
