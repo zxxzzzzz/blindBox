@@ -64,7 +64,7 @@ const handleSubmit = () => {
   const isDone = questionList.value.every((item) => item.value !== -1);
   if (!isDone) {
     ElMessage.error('问卷还没填完');
-    // return;
+    return;
   }
   update('question', questionList.value);
   if (route.query?.name) {
