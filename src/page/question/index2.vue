@@ -6,7 +6,7 @@
       </template>
     </div>
     <div class="text-center my-1.5rem">
-      <ElButton type="primary" @click="handleSubmit">提交</ElButton>
+      <ElButton type="primary" class="w-full"  @click="handleSubmit">提交</ElButton>
     </div>
   </div>
 </template>
