@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg bg-white p-0.5rem card">
+  <div class="rounded-lg bg-white p-0.5rem card" :class="props.isError ? 'border-2 border-red border-solid' : ''">
     <div>{{ props.question }}</div>
     <div class="px-0.5rem">
       <ElRadioGroup :model-value="props.modelValue" @change="handleChange">
@@ -15,6 +15,7 @@
 import { ElRadioGroup, ElRadio } from 'element-plus';
 const props = defineProps<{
   question: string;
+  isError: boolean;
   options: { label: string }[];
   modelValue: string;
 }>();

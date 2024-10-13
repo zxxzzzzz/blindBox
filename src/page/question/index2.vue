@@ -6,7 +6,7 @@
       </template>
     </div>
     <div class="text-center my-1.5rem">
-      <ElButton type="primary" class="w-full"  @click="handleSubmit">提交</ElButton>
+      <ElButton type="primary" class="w-full" @click="handleSubmit">提交</ElButton>
     </div>
   </div>
 </template>
@@ -18,10 +18,11 @@ import { ElButton, ElMessage } from 'element-plus';
 import { update } from '@/api';
 
 const questionList = ref([
-  { question: '您的性别', options: [{ label: '男' }, { label: '女' }], value: '' },
+  { question: '您的性别', options: [{ label: '男' }, { label: '女' }], value: '', isError: false },
   {
     question: '您的年龄',
     value: '',
+    isError: false,
     options: [
       { label: '18-25岁' },
       { label: '26-35岁' },
@@ -33,11 +34,13 @@ const questionList = ref([
   {
     question: '您的学历',
     value: '',
+    isError: false,
     options: [{ label: '初中及一下' }, { label: '高中/中专/高职' }, { label: '本科/大专' }, { label: '研究生及以上' }],
   },
   {
     question: '您的收入水准（或生活费）',
     value: '',
+    isError: false,
     options: [
       { label: '1000元以下' },
       { label: '1000-3000' },
@@ -49,6 +52,7 @@ const questionList = ref([
   {
     question: '您的职业',
     value: '',
+    isError: false,
     options: [
       { label: '学生' },
       { label: '企业员工' },
@@ -65,6 +69,10 @@ const handleSubmit = () => {
   const isDone = questionList.value.every((item) => item.value !== '');
   if (!isDone) {
     ElMessage.error('问卷还没填完');
+    questionList.value = questionList.value.map((item) => {
+      if (item.value === '') return { ...item, isError: true };
+      return { ...item, isError: false };
+    });
     return;
   }
   update(
