@@ -16,6 +16,7 @@ import { ref } from 'vue';
 import QuestionCard from './component/questionCard2.vue';
 import { ElButton, ElMessage } from 'element-plus';
 import { update } from '@/api';
+import { router } from '@/route';
 
 const questionList = ref([
   { question: '您的性别', options: [{ label: '男' }, { label: '女' }], value: '', isError: false },
@@ -79,6 +80,7 @@ const handleSubmit = () => {
     'question2',
     questionList.value.map((item) => ({ question: item.question, value: item.value }))
   );
+  router.push({name:'thankYou'})
 };
 </script>
 

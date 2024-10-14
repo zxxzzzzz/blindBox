@@ -7,7 +7,7 @@ import { RouterView } from 'vue-router';
 import { update } from './api';
 
 onMounted(() => {
-  update('event', {
+  update('init', {
     event: '页面加载完成',
   });
 });
