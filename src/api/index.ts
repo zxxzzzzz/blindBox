@@ -1,28 +1,25 @@
 import { getRandomList } from "@/util";
 
-let isSending = false;
-let dataList: any[] = [];
 
-export function update(type: string, data: any) {
+export async function update(type: string, data: any) {
   const randomList = getRandomList();
   const timestamp = new Date().valueOf();
   const dateTime = new Date(timestamp).toLocaleString();
   const url = location.href;
-  dataList.push({ data, uid: randomList.join(''), timestamp, dateTime, url, type });
-  if (isSending) {
-    return;
+  let error:Error|undefined = void 0
+  for (const _index of [0,1,2]) {
+    try {
+      const res = await fetch('/update', {
+        method: 'post',
+        body: JSON.stringify({ dataList: [{ data, uid: randomList.join(''), timestamp, dateTime, url, type }] }),
+        headers: {
+          contentType: 'application/json',
+        },
+      });
+      return res
+    } catch (_error) {
+      error = _error as Error
+    }
   }
-  isSending = true;
-  setTimeout(async () => {
-    isSending = false;
-    const _dataList = [...dataList];
-    dataList = [];
-    await fetch('/update', {
-      method: 'post',
-      body: JSON.stringify({ dataList: _dataList }),
-      headers: {
-        contentType: 'application/json',
-      },
-    });
-  }, 3000);
+  throw error
 }
