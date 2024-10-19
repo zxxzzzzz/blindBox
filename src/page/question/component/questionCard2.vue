@@ -2,8 +2,8 @@
   <div class="rounded-lg bg-white p-0.5rem card" :class="props.isError ? 'border-2 border-red border-solid' : ''">
     <div>{{ props.question }}</div>
     <div class="px-0.5rem">
-      <ElRadioGroup :model-value="props.modelValue" @change="handleChange">
-        <ElRadio v-for="option in props.options" :value="option.label">
+      <ElRadioGroup :model-value="props.modelValue" @change="handleChange" class="!flex">
+        <ElRadio v-for="option in props.options" :value="option.label" class="w-[30%]">
           {{ option.label }}
         </ElRadio>
       </ElRadioGroup>

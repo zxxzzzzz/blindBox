@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="w-full pt-[100%]" :style="goodsStyle" data-tag="商品图片"></div>
     <div :style="{ backgroundImage: `url(${bgUrl})` }" class="bg-no-repeat p-0.75rem bg-cover h-[100vh]">
       <div class="bg-white opacity-90 p-0.5rem">
         <div class="indent-sm">
@@ -30,9 +31,18 @@
 import bgUrl from '@/assets/bg1.png';
 import { ElButton } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
+import goodsUrl from '@/assets/jun.png';
+import { computed, StyleValue } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
+const goodsStyle = computed(() => {
+  return {
+    backgroundImage: `url(${goodsUrl})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  } as StyleValue;
+});
 
 const handleClickNext = () => {
   router.push({ name: 'question', query: { name: route.query.name as string } });

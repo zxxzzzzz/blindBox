@@ -38,21 +38,21 @@
       </div>
       <div class="flex w-60% h-2rem text-14px">
         <div
-          class="rounded-l-0.75rem bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          class="rounded-l-0.75rem bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center animate__animated animate__bounce"
           data-tag="我再想想"
           @click="handleThinkClick"
         >
           我再想想
         </div>
         <div
-          class="bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          class="bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center animate__animated animate__bounce"
           data-tag="加入购物车"
           @click="handleShopCarClick"
         >
           加入购物车
         </div>
         <div
-          class="rounded-r-0.75rem text-white bg-gradient-to-r from-[#fe7705] to-[#fd4d01] flex-1 leading-loose text-center"
+          class="rounded-r-0.75rem text-white bg-gradient-to-r from-[#fe7705] to-[#fd4d01] flex-1 leading-loose text-center animate__animated animate__bounce"
           data-tag="立即购买"
           @click="handleBuyClick"
         >
@@ -60,15 +60,17 @@
         </div>
       </div>
     </div>
+    <div class="text-center mt-4">
+      <ElText>亲，请选择一个符合您期望的选项吧！</ElText>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import goodsUrl from '@/assets/rc2.png';
 import { computed, StyleValue } from 'vue';
-import { ElButton, ElMessage } from 'element-plus';
+import { ElButton, ElMessage, ElText } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
-import { delay } from '@/util';
 import { update } from '@/api';
 
 const router = useRouter();
@@ -90,19 +92,17 @@ const handleClickNext = () => {
   router.push({ name: 'question', query: { name: route.name as string } });
 };
 const handleShopCarClick = async () => {
-  ElMessage.success('加入购物车成功');
-  await delay(1000);
-  update('addShopCar', {})
+  ElMessage.success({ message: '加入购物车成功', duration: 3000 });
+  update('addShopCar', {});
   router.push({ name: 'question2' });
 };
 const handleBuyClick = async () => {
-  ElMessage.success('下单成功');
-  update('buy', {})
-  await delay(1000);
+  ElMessage.success({ message: '下单成功', duration: 3000 });
+  update('buy', {});
   router.push({ name: 'question2' });
 };
 const handleThinkClick = () => {
-  update('think', {})
+  update('think', {});
   router.push({ name: 'question2' });
 };
 </script>

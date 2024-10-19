@@ -68,7 +68,6 @@ import goodsUrl from '@/assets/jun.png';
 import { computed, StyleValue } from 'vue';
 import { ElButton, ElMessage } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
-import { delay } from '@/util';
 import { update } from '@/api';
 
 const router = useRouter();
@@ -87,18 +86,16 @@ const goodsStyle = computed(() => {
 });
 
 const handleClickNext = () => {
-  router.push({ name: 'junDesc', query: { name: route.name as string } });
+  router.push({ name: 'junNormalDesc', query: { name: route.name as string } });
 };
 const handleShopCarClick = async () => {
-  ElMessage.success('加入购物车成功');
-  await delay(1000);
+  ElMessage.success({ message: '加入购物车成功', duration: 3000 });
   update('addShopCar', {})
   router.push({ name: 'question2' });
 };
 const handleBuyClick = async () => {
-  ElMessage.success('下单成功');
+  ElMessage.success({ message: '下单成功', duration: 3000 });
   update('buy', {})
-  await delay(1000);
   router.push({ name: 'question2' });
 };
 const handleThinkClick = () => {

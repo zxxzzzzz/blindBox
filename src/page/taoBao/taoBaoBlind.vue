@@ -11,15 +11,14 @@
     </div>
     <div class="h-3rem"></div>
     <div class="w-full pt-[100%]" :style="goodsStyle" data-tag="商品图片"></div>
-    <div class="rounded-xl bg-white  m-0.5rem p-0.5rem pb-1.5rem">
+    <div class="rounded-xl bg-white m-0.5rem p-0.5rem pb-1.5rem">
       <div class="text-#ed6828">¥</div>
       <div class="mt-0.5rem text-12px text-#a0a0a0">
         <span>快递:包邮</span>
         <span class="ml-2rem">发货地:珠海仓</span>
       </div>
       <div class="mt-0.5rem text-12px text-#a0a0a0">不支持七天无理由退换</div>
-      <div class="mt-1rem text-18px">【盲盒】纪念版赛车模型盲盒多种款式随机发货
-      </div>
+      <div class="mt-1rem text-18px">【盲盒】纪念版赛车模型盲盒多种款式随机发货</div>
     </div>
     <div class="flex w-full h-2rem text-14px justify-end" v-if="step === '1'">
       <ElButton class="w-full" type="primary" @click="handleClickNext"> 下一步 </ElButton>
@@ -39,21 +38,21 @@
       </div>
       <div class="flex w-60% h-2rem text-14px">
         <div
-          class="rounded-l-0.75rem bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          class="rounded-l-0.75rem bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center animate__animated animate__bounce"
           data-tag="我再想想"
           @click="handleThinkClick"
         >
           我再想想
         </div>
         <div
-          class="bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center"
+          class="bg-gradient-to-r from-[#fdca01] to-[#ff9803] text-white flex-1 leading-loose text-center animate__animated animate__bounce"
           data-tag="加入购物车"
           @click="handleShopCarClick"
         >
           加入购物车
         </div>
         <div
-          class="rounded-r-0.75rem text-white bg-gradient-to-r from-[#fe7705] to-[#fd4d01] flex-1 leading-loose text-center"
+          class="rounded-r-0.75rem text-white bg-gradient-to-r from-[#fe7705] to-[#fd4d01] flex-1 leading-loose text-center animate__animated animate__bounce"
           data-tag="立即购买"
           @click="handleBuyClick"
         >
@@ -61,15 +60,17 @@
         </div>
       </div>
     </div>
+    <div class="text-center mt-4">
+      <ElText>亲，请选择一个符合您期望的选项吧！</ElText>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import goodsUrl from '@/assets/R-C.png';
 import { computed, StyleValue } from 'vue';
-import { ElButton, ElMessage } from 'element-plus';
+import { ElButton, ElMessage, ElText } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
-import { delay } from '@/util';
 import { update } from '@/api';
 
 const router = useRouter();
@@ -91,19 +92,17 @@ const handleClickNext = () => {
   router.push({ name: 'question', query: { name: route.name as string } });
 };
 const handleShopCarClick = async () => {
-  ElMessage.success('加入购物车成功');
-  await delay(1000);
+  ElMessage.success({ message: '加入购物车成功', duration: 3000 });
   update('addShopCar', {})
   router.push({ name: 'question2' });
 };
 const handleBuyClick = async () => {
-  ElMessage.success('下单成功');
+  ElMessage.success({ message: '下单成功', duration: 3000 });
   update('buy', {})
-  await delay(1000);
   router.push({ name: 'question2' });
 };
 const handleThinkClick = () => {
-  update('think', {})
+  update('think', {});
   router.push({ name: 'question2' });
 };
 </script>

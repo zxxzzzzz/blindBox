@@ -2,7 +2,7 @@
   <div class="bg-[#f0f0f0] overflow-hidden h-[100vh]">
     <div>
       <template v-for="question in questionList">
-        <QuestionCard v-bind="question" v-model="question.value"></QuestionCard>
+        <QuestionCard2 v-bind="question" v-model="question.value"></QuestionCard2>
       </template>
     </div>
     <div class="text-center my-1.5rem">
@@ -13,15 +13,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import QuestionCard from './component/questionCard2.vue';
+import QuestionCard2 from './component/questionCard2.vue';
 import { ElButton, ElMessage } from 'element-plus';
 import { update } from '@/api';
 import { router } from '@/route';
 
 const questionList = ref([
-  { question: '您的性别', options: [{ label: '男' }, { label: '女' }], value: '', isError: false },
+  { question: '1.您的性别', options: [{ label: '男' }, { label: '女' }], value: '', isError: false },
   {
-    question: '您的年龄',
+    question: '2.您的年龄',
     value: '',
     isError: false,
     options: [
@@ -33,13 +33,13 @@ const questionList = ref([
     ],
   },
   {
-    question: '您的学历',
+    question: '3.您的学历',
     value: '',
     isError: false,
     options: [{ label: '初中及一下' }, { label: '高中/中专/高职' }, { label: '本科/大专' }, { label: '研究生及以上' }],
   },
   {
-    question: '您的收入水准（或生活费）',
+    question: '4.您的收入水准（或生活费）',
     value: '',
     isError: false,
     options: [
@@ -51,7 +51,7 @@ const questionList = ref([
     ],
   },
   {
-    question: '您的职业',
+    question: '5.您的职业',
     value: '',
     isError: false,
     options: [
@@ -60,8 +60,8 @@ const questionList = ref([
       { label: '个体经营者' },
       { label: '事业单位/公务员' },
       { label: '服务业人员' },
-      { label: '工人（如工厂工人/建筑工人/环卫工人等）' },
       { label: '其他' },
+      { label: '工人（如工厂工人/建筑工人/环卫工人等）' },
     ],
   },
 ]);

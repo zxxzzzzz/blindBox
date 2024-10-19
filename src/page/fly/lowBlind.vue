@@ -2,15 +2,15 @@
   <div class="bg-[#d0cece] h-screen">
     <div class="w-100% pt-100% h-0 relative" :style="goodsStyle">
       <div class="absolute top-0 w-full">
-        <div class="text-2rem text-black text-center font-800 mt-10% bg-[rgba(255,255,255,0.3)]">机票盲盒</div>
+        <div class="text-2rem text-black text-center font-800 mt-10% bg-[rgba(255,255,255,0.9)]">机票盲盒</div>
         <div
-          class="flex justify-center mt-0.75rem text-1.25rem bg-[rgba(255,255,255,0.7)] rounded-lg mx-2rem h-2rem leading-normal"
+          class="flex justify-center mt-0.75rem text-1.25rem bg-[rgba(255,255,255,0.9)] rounded-lg mx-2rem h-2rem leading-normal"
         >
           <div class="mr-0.5rem text-[rgb(255,10,10)] font-bold">50元</div>
           <div class="mr-0.5rem text-black">单程机票</div>
           <div class="text-blue-6 font-bold">不可退款</div>
         </div>
-        <div class="text-1rem mt-5rem bg-[rgba(255,255,255,0.7)] text-center p-0.2rem">
+        <div class="text-1rem mt-5rem bg-[rgba(255,255,255,0.9)] text-center p-0.2rem">
           <div class="text-black">覆盖全国所有地级市！出发城市任您挑！</div>
         </div>
       </div>
@@ -46,13 +46,13 @@
         </div>
         <div class="border-1 border-dashed w-full my-1rem opacity-50"></div>
         <div v-if="step === '2'" class="flex justify-center">
-          <div class="rounded-l-2xl bg-[#fea9be] h-2rem text-1rem text-white leading-loose text-center px-0.5rem" @click="handleShopCarClick">
+          <div class="rounded-l-2xl bg-[#e18ba0] h-2rem text-1rem text-white leading-loose text-center px-0.5rem" @click="handleShopCarClick">
             加入购物车
           </div>
-          <div class=" bg-[#fea9be] h-2rem text-1rem text-white leading-loose text-center mx-0.25rem px-0.5rem" @click="handleBuyClick">
+          <div class=" bg-[#e18ba0] h-2rem text-1rem text-white leading-loose text-center mx-0.25rem px-0.5rem" @click="handleBuyClick">
             ¥50元立即购买
           </div>
-          <div class="rounded-r-2xl bg-[#fea9be] h-2rem text-1rem text-white leading-loose text-center px-0.5rem" @click="handleThinkClick">
+          <div class="rounded-r-2xl bg-[#e18ba0] h-2rem text-1rem text-white leading-loose text-center px-0.5rem" @click="handleThinkClick">
             我再想想
           </div>
         </div>
@@ -78,7 +78,7 @@ import { computed, ref, StyleValue } from 'vue';
 import { cityList } from './cityList';
 import flyBgUrl from '@/assets/flyBlind.png';
 import { useRoute, useRouter } from 'vue-router';
-import { delay } from '@/util';
+import { update } from '@/api';
 
 const route = useRoute();
 const router = useRouter();
@@ -107,13 +107,13 @@ const handleClickNext = () => {
   router.push({ name: 'question', query: { name: route.name as string } });
 };
 const handleShopCarClick = async () => {
-  ElMessage.success('加入购物车成功');
-  await delay(1000);
+  ElMessage.success({ message: '加入购物车成功', duration: 3000 });
+  update('addShopCar', {})
   router.push({ name: 'question2' });
 };
 const handleBuyClick = async () => {
-  ElMessage.success('下单成功');
-  await delay(1000);
+  ElMessage.success({ message: '下单成功', duration: 3000 });
+  update('buy', {})
   router.push({ name: 'question2' });
 };
 const handleThinkClick = () => {
