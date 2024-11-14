@@ -13,7 +13,7 @@ export async function update(type: string, data: any) {
         method: 'post',
         body: JSON.stringify({ dataList: [{ data, uid: randomList.join(''), timestamp, dateTime, url, type }] }),
         headers: {
-          contentType: 'application/json',
+          'Content-Type': 'application/json',
         },
       });
       return res

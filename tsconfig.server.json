@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
-    "outDir": "./server",
     "noImplicitAny": true,
     "removeComments": true,
-    "module": "commonjs",
+    "module": "NodeNext",
     "lib": ["DOM"],
     "target": "ESNext",
     "allowJs": true,
     "esModuleInterop": true,
-    "rootDir": "./src/server",
+    "rootDir": "./",
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
   },
   "include": [
-    "./src/server"
+    "./http"
   ]
 }

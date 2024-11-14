@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#f0f0f0] overflow-hidden h-[100vh]">
+  <div class="bg-[#f0f0f0] overflow-auto h-[100vh]">
     <div>
       <template v-for="question in questionList">
         <QuestionCard2 v-bind="question" v-model="question.value"></QuestionCard2>

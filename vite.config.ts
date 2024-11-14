@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
   },
   build:{
-    outDir:'server'
+    outDir:'./dist'
   },
   plugins: [vue(), UnoCSS()],
   resolve: {
